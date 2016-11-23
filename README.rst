@@ -21,6 +21,13 @@ Jinja documentation:
 
 .. _Jinja: http://jinja.pocoo.org/
 
+Jinja.vim even  goes the  extra mile  and recognises file  names with  two file
+types like `foo.html.jinja`  correctly as `html.jinja`. At the same  time it is
+clever  enough to  know that  `foo.deprecated.jinja` is  of type  `jinja` alone
+since `deprecated` is not a file type Vim knows about (unless you have a plugin
+that would support  such a type of  course). This works recursively,  so if the
+first file type could be a compound as well Vim will take care of it.
+
 
 Installation
 ============
@@ -65,10 +72,6 @@ are respecting  it. If that is  the case please  bring the issue to  the plugin
 authors' attention; fixing  the issue once in that plugin  will forever benefit
 everyone while applying a  hack to my plugin is just  shoving the problem under
 the rug for the time being.
-
-Another issue is detection of files  with compound names, such as `.html.jina`;
-I don't know how to handle them and  the resulting file type will be just plain
-`jinja`. Help would be greatly appreciated.
 
 
 License

@@ -1,0 +1,37 @@
+####################################################
+# Detection of Jinja files based of file extension #
+####################################################
+
+Execute (A simple file extension):
+  silent file foo.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'jinja', &filetype
+
+
+Execute (Two file extensions):
+  silent file foo.html.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'html.jinja', &filetype
+
+
+Execute (Three file extensions):
+  silent file foo.tex.html.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'html.jinja', &filetype
+
+
+# I really hope there is no 'nonsense' file format out there
+Execute (Nonsense file extensions):
+  silent file foo.nonsense.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'jinja', &filetype
+
+

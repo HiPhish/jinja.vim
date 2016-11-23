@@ -1,6 +1,6 @@
-##############################################################
-# Test detection of various Jinja elements in a non-jinja file
-##############################################################
+################################################################
+# Test detection of various Jinja elements in a non-jinja file #
+################################################################
 
 Given jinja (A comment):
   {# A jinja comment #}

@@ -27,4 +27,16 @@
 " 'html.jinja' instead of just 'jinja'. However, we cannot simply take
 " everything after the first dot as the file type because something like
 " `main.macros.html.jinja` would get the wrong file type as well.
-autocmd! BufRead,BufNewFile *.jinja  setfiletype jinja
+autocmd! BufRead,BufNewFile *.jinja  call <SID>DetectFileExtension(expand('<afile>'))
+
+" Detect a normal or compound file extension (like 'foo.html.jinja')
+function! s:DetectFileExtension(fname)
+	" This will fail setting the file type of unknown file extension like
+	" 'foo.nonsense.jinja', which is what we want.
+	execute 'doautocmd BufReadPost' fnamemodify(a:fname, ':r')
+    if empty(&filetype)
+        set filetype=jinja
+    else
+        set filetype+=.jinja
+    endif
+endfunction
