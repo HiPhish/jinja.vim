@@ -1,0 +1,56 @@
+##############################################################
+# Test detection of various Jinja elements in a non-jinja file
+##############################################################
+
+Given jinja (A comment):
+  {# A jinja comment #}
+
+Execute:
+  Assert jinja#DetectJinja(1, 1)
+
+
+Given jinja (A statement):
+  {% for item in items %}
+
+Execute:
+  Assert jinja#DetectJinja(1, 1)
+
+
+Given jinja (An expression):
+  {{ item }}
+
+Execute:
+  Assert jinja#DetectJinja(1, 1)
+
+
+Given jinja (A line-comment):
+  ## A jinja comment
+
+Execute:
+  Assert jinja#DetectJinja(1, 1)
+
+
+Given jinja (A line statement):
+  # for item in items
+
+Execute:
+  Assert jinja#DetectJinja(1, 1)
+
+
+# We should test for more types of jinja elements
+Given html (Try detecting auto-adjusting file type):
+  {# A jinja comment #}
+  <html>
+    <head>
+      <title>Sample HTML file</title>
+    </head>
+    <body>
+      <p>Hello world.</p>
+    </body>
+  </html>
+
+Execute:
+  call jinja#AdjustFiletype()
+
+Then:
+  AssertEqual 'html.jinja', &filetype

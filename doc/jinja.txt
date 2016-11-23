@@ -1,0 +1,78 @@
+*jinja.txt*   filetype detection and syntax support
+
+                       _ _        _             _           ~
+                      (_|_)_ __  (_) __ ___   _(_)_ __ ___  ~
+                      | | | '_ \ | |/ _` \ \ / / | '_ ` _ \ ~
+                      | | | | | || | (_| |\ V /| | | | | | |~
+                     _/ |_|_| |_|/ |\__,_(_)_/ |_|_| |_| |_|~
+                    |__/       |__/                         ~
+
+
+Version: 1.0.0
+Author: Alejandro "HiPhish" Sanchez
+License: MIT License
+
+
+==============================================================================
+TABLE OF CONTENTS                                             *jinja-contents*
+
+    1. Introduction .................................... |jinja-introduction|
+    2. Basic configuration ............................. |jinja-configuration|
+    3. Functions ....................................... |jinja-functions|
+
+
+==============================================================================
+INTRODUCTION                                              *jinja-introduction*
+
+*jinja.vim*  provides  support for  Jinja 3  syntax  highlighting  and file type
+detection in  Vim using Vim's  dotted filetype syntax.  This allows you to use
+Jinja with any other language you want, not just HTML alone.
+
+File type detection will scan  your file for lines resembling Jinja syntax and
+can adjust the |'filetype'| option appropriately.
+
+
+==============================================================================
+CONFIGURATION                                            *jinja-configuration*
+
+Jinja.vim works  out of the box,  but if you want  Vim to automatically detect
+the presence of Jinja  code in your files  you will have to perform some basic
+setup.
+
+You can  use  the  function  |jinja#AdjustFiletype|  to append  'jinja' to  your
+existing  |'filetype'|  option if Jinja code  has been  detected.  A good way to
+automate the process is to  write to following line of code in the appropriate
+file:
+>
+    " For example ftdetect/html.vim
+    au! BufRead,BufNewFile *.html set ft=html | call jinja#AdjustFiletype()
+<
+
+==============================================================================
+FUNCTIONS                                                    *jinja-functions*
+
+jinja#AdjustFiletype()                                  *jinja#AdjustFiletype*
+
+    Attempt detecting Jinja code in the current buffer,  and if Jinja code was
+    detected  the string  '.jinja' will be appended  to the  |'filetype'| option
+    of the buffer.
+
+    This function  is just a  convenience  wrapper for |jinja#DetectJinja|  that
+    checks only  the first  five lines;  use that  function if  you  need more
+    control.
+
+
+jinja#DetectJinja(first, last)                            *jinja#DetectJinja*
+
+    Detect Jinja code in  the current buffer  from 'first' to 'last' line.  If
+    code was found the  number of the first line containing  that code will be
+    returned, otherwise 0 is returned.
+   
+    This function might detect a false-positive  if the buffer contains a line
+    that has Jinja code in it,  but is not a Jinja file  (e.g. a cheat sheet).
+    If that is a possibility you  will have to use the returned line number to
+    do further filtering.
+
+
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:

@@ -1,0 +1,51 @@
+# ##########################################
+# Syntax detection of various Jinja elements
+# ##########################################
+
+Given jinja (Sample of Jinja syntax):
+  {# This should be highlighted like a comment #}
+
+  {# Variables #}
+  {{ variable }}
+  {{ variable | with | filter }}
+  {{ filtering | with(arg, args) }}
+
+  {# Statements #}
+  {% jinja_statement %}
+  {% statement with arguments %}
+  {% function_call() %}
+
+  {# Control of command #}
+  {% if foo or bar %}
+  {% else if baz %}
+  {% endif %}
+
+  {% for foo in foos %}
+  {% endfor %}
+
+Execute (Verify comments):
+  AssertEqual 'jinjaCommentDelim', SyntaxAt(1,  1)
+  AssertEqual 'jinjaCommentDelim', SyntaxAt(1,  2)
+  AssertEqual 'jinjaComment'     , SyntaxAt(1,  4)
+  AssertEqual 'jinjaCommentDelim', SyntaxAt(1, 46)
+  AssertEqual 'jinjaCommentDelim', SyntaxAt(1, 47)
+
+Execute (Verify variable blocks):
+  AssertEqual 'jinjaVarDelim'    , SyntaxAt(4,  1)
+  AssertEqual 'jinjaVarDelim'    , SyntaxAt(4,  2)
+  AssertEqual 'jinjaVarBlock'    , SyntaxAt(4,  3)
+  AssertEqual 'jinjaVariable'    , SyntaxAt(4,  4)
+  AssertEqual 'jinjaVarDelim'    , SyntaxAt(4, 13)
+  AssertEqual 'jinjaVarDelim'    , SyntaxAt(4, 14)
+
+  AssertEqual 'jinjaOperator'    , SyntaxAt(5, 13)
+  AssertEqual 'jinjaFilter'      , SyntaxAt(5, 15)
+
+  " I don't know why this one is failing
+  AssertEqual 'jinjaNested'      , SyntaxAt(6, 25)
+
+Execute (Verify statements blocks):
+  AssertEqual 'jinjaTagDelim'    , SyntaxAt(9,  1)
+  AssertEqual 'jinjaTagDelim'    , SyntaxAt(9,  2)
+  AssertEqual 'jinjaTagBlock'    , SyntaxAt(9,  3)
+  AssertEqual 'jinjaStatement'   , SyntaxAt(9,  4)
