@@ -72,8 +72,11 @@ Testing
 The testing framework  is vader.vim_; execute `:Vader test/*.vader`  to run all
 tests. These are are test suites:
 
-ft-detection
+jinja-detect
    Test for the correct detection of Jinja code and file type adjustment.
+
+ftdetect
+   Test for the correct filetype setting when opening a `*.jinja` file
 
 syntax
    Test the syntax elements of a sample Jinja file.
