@@ -35,3 +35,43 @@ Then:
   AssertEqual 'jinja', &filetype
 
 
+Given html (Do not double-detect jinja):
+  {# This is a Jinja comment #}
+
+Execute:
+  silent file foo.html.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'html.jinja', &filetype
+
+
+# This will fail because the filetype remains 'html.jinja'.
+Execute (Do not append Jinja multiple times):
+  silent file foo.html.jinja
+  filetype detect
+  silent file foo.nonsense.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'jinja', &filetype
+
+
+Execute (Add new file type where necessary):
+  silent file foo.nonsense.jinja
+  filetype detect
+  silent file foo.html.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'html.jinja', &filetype
+
+
+Execute (change file type when necessary):
+  silent file foo.html.jinja
+  filetype detect
+  silent file foo.xml.jinja
+  filetype detect
+
+Then:
+  AssertEqual 'xml.jinja', &filetype

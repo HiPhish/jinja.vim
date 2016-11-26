@@ -73,6 +73,13 @@ authors' attention; fixing  the issue once in that plugin  will forever benefit
 everyone while applying a  hack to my plugin is just  shoving the problem under
 the rug for the time being.
 
+Jinja.vim will recognise the file  `foo.html.jinja` as of `html.jinja` type and
+`foo.deprecated.jinja`  or `foo.jinja`  as just  `jinja`, but  if you  were the
+change the file  name from the former to  one of the latter the  plugin will be
+unable to pick up  that change. This only happens when the  target file type is
+plain `jinja`. Changing `foo.html.jinja` to  `foo.xml.jinja` will work fine. To
+my knowledge there is no way of fixing this without changing Vim.
+
 
 License
 #######

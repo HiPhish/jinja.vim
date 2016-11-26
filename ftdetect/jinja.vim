@@ -31,12 +31,23 @@ autocmd! BufRead,BufNewFile *.jinja  call <SID>DetectFileExtension(expand('<afil
 
 " Detect a normal or compound file extension (like 'foo.html.jinja')
 function! s:DetectFileExtension(fname)
+	" Clear the file because if the next command fails to set it the old file
+	" type will persist.
+	" Bug: The below well cause 'did_filetype()' to return true, which will
+	" prevent the next command from setting the file type at all. there needs
+	" to be a way of supressing the event.
+	" noautocmd set filetype=
+
 	" This will fail setting the file type of unknown file extension like
 	" 'foo.nonsense.jinja', which is what we want.
-	execute 'doautocmd BufReadPost' fnamemodify(a:fname, ':r')
-    if empty(&filetype)
-        set filetype=jinja
-    else
-        set filetype+=.jinja
-    endif
+	execute 'doautocmd BufReadPost '.fnamemodify(a:fname, ':r')
+
+	if empty(&filetype)
+		set filetype=jinja
+		" execute 'setfiletype jinja'
+	elseif &ft =~? 'jinja'
+		return
+	else
+		set filetype+=.jinja
+	endif
 endfunction
