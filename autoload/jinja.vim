@@ -1,6 +1,6 @@
 " Author: Alejandro "HiPhish" Sanchez
 " License: The MIT License {{{
-"   Copyright © 2016 Alejandro "HiPhish" Sanchez
+"   Copyright (c) 2016 Alejandro "HiPhish" Sanchez
 "   
 "   Permission is hereby granted, free of charge, to any person obtaining
 "   a copy of this software and associated documentation files (the "Software"),
@@ -31,7 +31,7 @@
 " The parameters will get adjusted to account for files which are too small.
 " This is because the function might get called by scripts that just assume a
 " certain minimal length.
-function! jinja#DetectJinja(first, last)
+function! jinja#DetectJinja(first, last) abort
 	" How many lines to count, range takes precedence over default values
 	let l:first = min([a:first, line('$')])
 	let l:last  = min([a:last, line('$')])
@@ -45,9 +45,9 @@ function! jinja#DetectJinja(first, last)
 				\'^\#\s*(extends|block|macro|set|if|for|include|trans)>|' .
 				\'^\#\#.+'
 	" Probe a number of lines for Jinja code, give up if none is found.
-	for l in range(l:first, l:last)
-		if getline(l) =~? l:jinja_pattern
-			return l
+	for l:line in range(l:first, l:last)
+		if getline(l:line) =~? l:jinja_pattern
+			return l:line
 		endif
 	endfor
 endfun
@@ -55,7 +55,7 @@ endfun
 
 " Appends '.jinja' to the 'filetype' option if Jinja code has been detected in
 " the buffer.
-function! jinja#AdjustFiletype()
+function! jinja#AdjustFiletype() abort
 	if &filetype =~? 'jinja'
 		return
 	endif

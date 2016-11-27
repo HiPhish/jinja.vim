@@ -5,7 +5,7 @@
 
 syntax case match
 
-if exists("b:current_syntax") && b:current_syntax =~ 'jinja'
+if exists('b:current_syntax') && b:current_syntax =~? 'jinja'
 	finish
 endif
 
@@ -87,4 +87,4 @@ HiLink jinjaComment Comment
 
 delcommand HiLink
 
-let b:current_syntax = "jinja"
+let b:current_syntax = 'jinja'

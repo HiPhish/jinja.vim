@@ -1,6 +1,6 @@
 " Author: Alejandro "HiPhish" Sanchez
 " License: The MIT License {{{
-"   Copyright © 2016 Alejandro "HiPhish" Sanchez
+"   Copyright (c) 2016 Alejandro "HiPhish" Sanchez
 "   
 "   Permission is hereby granted, free of charge, to any person obtaining
 "   a copy of this software and associated documentation files (the "Software"),
@@ -20,6 +20,8 @@
 "   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 "   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
+
+
 
 
 " This is flawed: if the file name is 'foo.jinja' it will work fine, but if
@@ -45,7 +47,7 @@ function! s:DetectFileExtension(fname)
 	if empty(&filetype)
 		set filetype=jinja
 		" execute 'setfiletype jinja'
-	elseif &ft =~? 'jinja'
+	elseif &filetype =~? 'jinja'
 		return
 	else
 		set filetype+=.jinja
