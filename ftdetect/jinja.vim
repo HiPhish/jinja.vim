@@ -29,7 +29,7 @@
 " 'html.jinja' instead of just 'jinja'. However, we cannot simply take
 " everything after the first dot as the file type because something like
 " `main.macros.html.jinja` would get the wrong file type as well.
-autocmd! BufRead,BufNewFile *.jinja  call <SID>DetectFileExtension(expand('<afile>'))
+autocmd! BufRead,BufNewFile *.jinja,*jinja2,*.j2 call <SID>DetectFileExtension(expand('<afile>'))
 
 " Detect a normal or compound file extension (like 'foo.html.jinja')
 function! s:DetectFileExtension(fname)
