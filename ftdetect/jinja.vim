@@ -21,35 +21,23 @@
 "   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-
-
-
-" This is flawed: if the file name is 'foo.jinja' it will work fine, but if
-" the file name is 'foo.html.jinja' we would want the file type to be
-" 'html.jinja' instead of just 'jinja'. However, we cannot simply take
-" everything after the first dot as the file type because something like
-" `main.macros.html.jinja` would get the wrong file type as well.
-autocmd! BufRead,BufNewFile *.jinja,*jinja2,*.j2 call <SID>DetectFileExtension(expand('<afile>'))
+augroup filetypedetect
+autocmd! BufRead,BufNewFile *.jinja,*jinja2,*.j2 call <SID>extension(expand('<afile>'))
+augroup END
 
 " Detect a normal or compound file extension (like 'foo.html.jinja')
-function! s:DetectFileExtension(fname)
-	" Clear the file because if the next command fails to set it the old file
-	" type will persist.
-	" Bug: The below well cause 'did_filetype()' to return true, which will
-	" prevent the next command from setting the file type at all. there needs
-	" to be a way of supressing the event.
-	" noautocmd set filetype=
-
+function! s:extension(fname)
 	" This will fail setting the file type of unknown file extension like
 	" 'foo.nonsense.jinja', which is what we want.
-	execute 'doautocmd BufReadPost '.fnamemodify(a:fname, ':r')
+	noautocmd exe 'file ' .. fnamemodify(a:fname, ':r')
+	filetype detect
 
+	" Now that we have detected the parent file type we can append Jinja to it
 	if empty(&filetype)
 		set filetype=jinja
-		" execute 'setfiletype jinja'
-	elseif &filetype =~? 'jinja'
-		return
-	else
+	elseif &filetype !~? 'jinja'
 		set filetype+=.jinja
 	endif
+
+	exe 'noautocmd file ' .. a:fname
 endfunction

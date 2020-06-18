@@ -2,7 +2,10 @@
 # Detection of Jinja files based of file extension #
 ####################################################
 
-Execute (A simple file extension):
+Given (A simple file extension):
+  Hello world
+
+Execute:
   silent file foo.jinja
   filetype detect
 
@@ -10,7 +13,32 @@ Then:
   AssertEqual 'jinja', &filetype
 
 
-Execute (Two file extensions):
+Given (File extension j2):
+  Hello world
+
+Execute:
+  silent file foo.j2
+  filetype detect
+
+Then:
+  AssertEqual 'jinja', &filetype
+
+
+Given (File extension jinja2):
+  Hello world
+
+Execute:
+  silent file foo.jinja2
+  filetype detect
+
+Then:
+  AssertEqual 'jinja', &filetype
+
+
+Given (Two file extensions):
+  Hello world
+
+Execute:
   silent file foo.html.jinja
   filetype detect
 
@@ -18,7 +46,10 @@ Then:
   AssertEqual 'html.jinja', &filetype
 
 
-Execute (Three file extensions):
+Given (Three file extensions):
+  Hello world
+
+Execute:
   silent file foo.tex.html.jinja
   filetype detect
 
@@ -26,8 +57,11 @@ Then:
   AssertEqual 'html.jinja', &filetype
 
 
+Given (Nonsense file extensions):
+  Hello world
+
 # I really hope there is no 'nonsense' file format out there
-Execute (Nonsense file extensions):
+Execute:
   silent file foo.nonsense.jinja
   filetype detect
 
@@ -35,7 +69,7 @@ Then:
   AssertEqual 'jinja', &filetype
 
 
-Given html (Do not double-detect jinja):
+Given (Do not double-detect jinja):
   {# This is a Jinja comment #}
 
 Execute:
@@ -46,8 +80,11 @@ Then:
   AssertEqual 'html.jinja', &filetype
 
 
+Given (Do not append Jinja multiple times):
+  Hello world
+
 # This will fail because the filetype remains 'html.jinja'.
-Execute (Do not append Jinja multiple times):
+Execute:
   silent file foo.html.jinja
   filetype detect
   silent file foo.nonsense.jinja
@@ -57,7 +94,10 @@ Then:
   AssertEqual 'jinja', &filetype
 
 
-Execute (Add new file type where necessary):
+Given (Add new file type where necessary):
+  Hello world
+
+Execute:
   silent file foo.nonsense.jinja
   filetype detect
   silent file foo.html.jinja
@@ -67,7 +107,10 @@ Then:
   AssertEqual 'html.jinja', &filetype
 
 
-Execute (change file type when necessary):
+Given (change file type when necessary):
+  Hello world
+
+Execute:
   silent file foo.html.jinja
   filetype detect
   silent file foo.xml.jinja

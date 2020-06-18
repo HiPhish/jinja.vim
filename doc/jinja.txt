@@ -8,7 +8,7 @@
                     |__/       |__/                         ~
 
 
-Version: 1.0.0
+Version: 1.1.0
 Author: Alejandro "HiPhish" Sanchez
 License: MIT License
 
