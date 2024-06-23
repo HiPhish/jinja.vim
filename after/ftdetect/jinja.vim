@@ -29,7 +29,7 @@ augroup END
 function! s:extension(fname)
 	" This will fail setting the file type of unknown file extension like
 	" 'foo.nonsense.jinja', which is what we want.
-	noautocmd exe 'file ' .. fnamemodify(a:fname, ':r')
+	noautocmd silent exe 'file' fnameescape(fnamemodify(a:fname, ':r'))
 	filetype detect
 
 	" Now that we have detected the parent file type we can append Jinja to it
@@ -39,5 +39,5 @@ function! s:extension(fname)
 		set filetype+=.jinja
 	endif
 
-	exe 'noautocmd file ' .. a:fname
+	silent exe 'noautocmd' 'file' fnameescape(a:fname)
 endfunction
