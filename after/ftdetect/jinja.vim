@@ -27,10 +27,22 @@ augroup END
 
 " Detect a normal or compound file extension (like 'foo.html.jinja')
 function! s:extension(fname)
-	" This will fail setting the file type of unknown file extension like
-	" 'foo.nonsense.jinja', which is what we want.
+	let l:previous_ft = &ft
+
+	" Try to detect the file type without the Jinja extension first. This will
+	" fail setting the file type of file extension like 'foo.xxxx.jinja',
+	" which is what we want.
 	noautocmd silent exe 'file' fnameescape(fnamemodify(a:fname, ':r'))
 	filetype detect
+	silent exe 'noautocmd' 'file' fnameescape(a:fname)
+
+	" If file type detection fails and there already was a file type it will
+	" be unchanged; this can happen if we change the file name from something
+	" like 'foo.html.jinja' to 'foo.xxxx.jinja'.  In that case we have to
+	" manually reset the file type to the empty string.
+	if !empty(l:previous_ft) && l:previous_ft == &filetype
+		set filetype=
+	endif
 
 	" Now that we have detected the parent file type we can append Jinja to it
 	if empty(&filetype)
@@ -38,6 +50,4 @@ function! s:extension(fname)
 	elseif &filetype !~? 'jinja'
 		set filetype+=.jinja
 	endif
-
-	silent exe 'noautocmd' 'file' fnameescape(a:fname)
 endfunction
