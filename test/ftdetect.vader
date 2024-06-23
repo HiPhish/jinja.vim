@@ -69,6 +69,18 @@ Then:
   AssertEqual 'jinja', &filetype
 
 
+Given (File name with percent character):
+  Hello world
+
+Execute:
+  silent execute 'file' fnameescape('foo%bar.html.jinja')
+  filetype detect
+
+Then:
+  AssertEqual 'html.jinja', &filetype
+  AssertEqual 'foo%bar.html.jinja', bufname()
+
+
 Given (Do not double-detect jinja):
   {# This is a Jinja comment #}
 
