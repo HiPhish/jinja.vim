@@ -34,7 +34,10 @@ function! s:extension(fname)
 	" which is what we want.
 	noautocmd silent exe 'file' fnameescape(fnamemodify(a:fname, ':r'))
 	filetype detect
-	silent exe 'noautocmd' 'file' fnameescape(a:fname)
+	noautocmd silent exe 'file' fnameescape(a:fname)
+	" Using ':file' has dissociated the buffer from its file, but executing
+	" ':edit' fixes this
+	noautocmd silent edit
 
 	" If file type detection fails and there already was a file type it will
 	" be unchanged; this can happen if we change the file name from something
