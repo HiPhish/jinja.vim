@@ -64,8 +64,8 @@ detecting the presence of Jinja code in  a buffer and changing the file type if
 necessary by appending `.jinja` to it.
 
 
-Note for Neovim and Tree-sitter
-===============================
+Note regarding Neovim and Tree-sitter
+=====================================
 
 If Neovim's Tree-sitter syntax highlighting is active regular syntax
 highlighting will be disabled.  This means for example that if you edit a
