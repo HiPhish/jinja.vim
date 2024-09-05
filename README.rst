@@ -64,6 +64,29 @@ detecting the presence of Jinja code in  a buffer and changing the file type if
 necessary by appending `.jinja` to it.
 
 
+Note for Neovim and Tree-sitter
+===============================
+
+If Neovim's Tree-sitter syntax highlighting is active regular syntax
+highlighting will be disabled.  This means for example that if you edit a
+`html.jinja` file and you have the Tree-sitter HTML parser installed the
+regular highlighting for Jinja will be disabled.  If you want to have both
+Tree-sitter highlighting for HTML and regular highlighting for Jinja in your
+buffer you need to set `syntax=on` for that buffer.
+
+One way of automating this is to add this snippet to `ftplugin/jinja.vim`:
+
+.. code:: vim
+
+   if !get(b:, 'jinja_syntax_autocmd_loaded', v:false)
+	   if luaeval("vim.treesitter.language.get_lang('jinja')") == v:null
+		   autocmd FileType <buffer> if !empty(&ft) | setlocal syntax=on | endif
+	   endif
+	   let b:jinja_syntax_autocmd_loaded = v:true
+   endif
+
+
+
 Bugs and Caveats
 ================
 
