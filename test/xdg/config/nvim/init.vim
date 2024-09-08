@@ -1,0 +1,1 @@
+execute 'set rtp+=' .. getcwd()
