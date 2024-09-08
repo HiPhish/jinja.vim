@@ -1,0 +1,19 @@
+{# This should be highlighted like a comment #}
+
+{# Variables #}
+{{ variable }}
+{{ variable | with | filter }}
+{{ filtering | with(arg, args) }}
+
+{# Statements #}
+{% jinja_statement %}
+{% statement with arguments %}
+{% function_call() %}
+
+{# Control of command #}
+{% if foo or bar %}
+{% else if baz %}
+{% endif %}
+
+{% for foo in foos %}
+{% endfor %}
