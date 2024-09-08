@@ -21,9 +21,7 @@
 "   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-augroup filetypedetect
 autocmd! BufRead,BufNewFile *.jinja,*jinja2,*.j2 call <SID>extension(expand('<afile>'))
-augroup END
 
 " Detect a normal or compound file extension (like 'foo.html.jinja')
 function! s:extension(fname)
@@ -32,9 +30,9 @@ function! s:extension(fname)
 	" Try to detect the file type without the Jinja extension first. This will
 	" fail setting the file type of file extension like 'foo.xxxx.jinja',
 	" which is what we want.
-	noautocmd silent exe 'file' fnameescape(fnamemodify(a:fname, ':r'))
+	call nvim_buf_set_name(0, fnamemodify(a:fname, ':r'))
 	filetype detect
-	noautocmd silent exe 'file' fnameescape(a:fname)
+	call nvim_buf_set_name(0, a:fname)
 	" Using ':file' has dissociated the buffer from its file, but executing
 	" ':edit' fixes this
 	noautocmd silent edit
