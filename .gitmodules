@@ -1,0 +1,6 @@
+[submodule "test/xdg/local/share/nvim/site/pack/testing/start/yo-dawg.nvim"]
+	path = test/xdg/local/share/nvim/site/pack/testing/start/yo-dawg.nvim
+	url = https://gitlab.com/HiPhish/yo-dawg.nvim.git
+[submodule "test/bin"]
+	path = test/bin
+	url = git@gitlab.com:HiPhish/nvim-busted-shims.git
