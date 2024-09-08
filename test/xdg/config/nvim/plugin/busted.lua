@@ -10,6 +10,7 @@ local assert = require 'luassert'
 
 ---Globally unique keys to retrieve the values from the current test state.
 local NVIM_STATE_KEY, ROW_STATE_KEY, COL_STATE_KEY = {}, {}, {}
+local START_ROW_STATE_KEY, END_ROW_STATE_KEY = {}, {}
 
 ---Add the Neovim client to the current test state.
 local function nvim_client(state, args, _level)
@@ -24,6 +25,13 @@ local function at_position(state, args, _level)
 	assert(args.n == 2, 'Wrong number of arguments given to modifier')
 	rawset(state, ROW_STATE_KEY, args[1])
 	rawset(state, COL_STATE_KEY, args[2])
+	return state
+end
+
+local function between_rows(state, args, _level)
+	assert(args.n == 2, 'Wrong number of arguments given to modifier')
+	rawset(state, START_ROW_STATE_KEY, args[1])
+	rawset(state, END_ROW_STATE_KEY, args[2])
 	return state
 end
 
@@ -46,6 +54,17 @@ local function has_hlgroup(state, args)
 	return result == hlgroup
 end
 
+local function contains_jinja(state, args, _level)
+	assert(args.n == 1, 'No row provided')
+	local nvim = rawget(state, NVIM_STATE_KEY)
+	local start_row = rawget(state, START_ROW_STATE_KEY)
+	local end_row = rawget(state, END_ROW_STATE_KEY)
+	local expected = args[1]
+
+	local linenr = nvim:call_function('jinja#DetectJinja', {start_row, end_row})
+	return linenr == expected
+end
+
 ---Assert that the current buffer has the expected file type
 local function has_filetype(state, args, _level)
 	assert(args.n == 1, 'No file type provided')
@@ -61,8 +80,12 @@ say:set('assertion.hlgroup_at.negative', 'Unexpected highlight group %s')
 say:set('assertion.has_filetype.positive', 'Expected file type %s')
 say:set('assertion.has_filetype.negative', 'Unexpected file type %s')
 
+say:set('assertion.contains_jina.positive', 'No Jinja code detected on line %s')
+say:set('assertion.contains_jina.negative', 'Jinja code detected on line %s')
+
 assert:register('modifier', 'nvim', nvim_client)
 assert:register('modifier', 'at_position', at_position)
+assert:register('modifier', 'between_rows', between_rows)
 assert:register(
 	'assertion', 'has_hlgroup', has_hlgroup,
 	'assertion.hlgroup_at.positive', 'assertion.hlgroup_at.negative'
@@ -70,4 +93,8 @@ assert:register(
 assert:register(
 	'assertion', 'has_filetype', has_filetype,
 	'assertion.has_filetype.positive', 'assertion.has_filetype.negative'
+)
+assert:register(
+	'assertion', 'contains_jinja', contains_jinja,
+	'assertion.contains_jinja.positive', 'assertion.contains_jinja.negative'
 )
