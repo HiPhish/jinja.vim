@@ -3,4 +3,4 @@
 	url = https://gitlab.com/HiPhish/yo-dawg.nvim.git
 [submodule "test/bin"]
 	path = test/bin
-	url = git@gitlab.com:HiPhish/nvim-busted-shims.git
+	url = https://gitlab.com/HiPhish/nvim-busted-shims.git
