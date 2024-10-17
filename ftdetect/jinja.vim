@@ -30,9 +30,9 @@ function! s:extension(fname)
 	" Try to detect the file type without the Jinja extension first. This will
 	" fail setting the file type of file extension like 'foo.xxxx.jinja',
 	" which is what we want.
-	call nvim_buf_set_name(0, fnamemodify(a:fname, ':r'))
+	execute 'file' fnamemodify(a:fname, ':r')
 	filetype detect
-	call nvim_buf_set_name(0, a:fname)
+	execute 'file' a:fname
 	" Using ':file' has dissociated the buffer from its file, but executing
 	" ':edit' fixes this
 	noautocmd silent edit
