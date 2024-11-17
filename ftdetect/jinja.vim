@@ -30,9 +30,9 @@ function! s:extension(fname)
 	" Try to detect the file type without the Jinja extension first. This will
 	" fail setting the file type of file extension like 'foo.xxxx.jinja',
 	" which is what we want.
-	silent execute 'file' fnamemodify(a:fname, ':r')
+	silent execute 'file' fnamemodify(fnameescape(a:fname), ':r')
 	filetype detect
-	silent execute 'file' a:fname
+	silent execute 'file' fnameescape(a:fname)
 	" Using ':file' has dissociated the buffer from its file, but executing
 	" ':edit' fixes this
 	noautocmd silent edit
