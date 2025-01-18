@@ -20,6 +20,11 @@ describe('Detection of various Jinja elements in non-Jinja files', function()
 		assert.nvim(nvim).between_rows(1, 1).contains_jinja(1)
 	end)
 
+	it('detects imports', function()
+		set_content('{% import "foo" as foo %}')
+		assert.nvim(nvim).between_rows(1, 1).contains_jinja(1)
+	end)
+
 	it('detects statements', function()
 		set_content('{% for item in items %}')
 		assert.nvim(nvim).between_rows(1, 1).contains_jinja(1)

@@ -41,7 +41,7 @@ function! jinja#DetectJinja(first, last) abort
 	" comment
 	let l:jinja_pattern = '\v\{\{.*\}\}|' . 
 				\'\{\#.*\#\}|' .
-				\'\{\%\-?\s*(end.+|extends|block|macro|set|if|for|include|trans)>|' .
+				\'\{\%\-?\s*(end.+|extends|block|macro|set|if|for|include|import|trans)>|' .
 				\'^\#\s*(extends|block|macro|set|if|for|include|trans)>|' .
 				\'^\#\#.+'
 	" Probe a number of lines for Jinja code, give up if none is found.
