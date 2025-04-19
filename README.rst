@@ -35,7 +35,7 @@ Installation
 Use your preferred  method of installing Vim plugins,  manually or  via package
 manager. There is nothing out of the ordinary here.
 
-.. warning:: Note to plugin manager users
+.. warning:: **Note to plugin manager users**
 
    The plugin repository does define some Git submodules, but they are only
    needed if you want to run tests.  They are not needed to run the plugin, if
