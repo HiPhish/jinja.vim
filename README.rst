@@ -47,8 +47,8 @@ Configuration
 
 Since this is just a  syntax and filetype-detection plugin  there is nothing to
 configure,  once  a  file  has  been  identified  as a  Jinja file  it will  be
-highlighted  appropriately.  Any  file  with  the  extension  `.jinja`  will be
-recognised as a Jinja file.
+highlighted  appropriately.  Any file  with  the  extension `.jinja`, `.jinja2`
+or `.j2` will be recognised as a Jinja file.
 
 On the other hand,  if you want to use  Jinja highlighting in  other file types
 like HTML you will  have to set it up appropriately.  For HTML support  add the
