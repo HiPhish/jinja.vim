@@ -21,10 +21,21 @@
 "   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-autocmd! BufRead,BufNewFile *.jinja,*jinja2,*.j2 call <SID>extension(expand('<afile>'))
+
+" How it works: Jinja files may have a compound file name like
+" 'foo.html.jinja' or 'foo.tex.jinja'.  We trim off the '.jinja' (or '.jinja2'
+" or '.j2') part of the file name and try detecting the file type type.  If
+" one is found we append '.jinja' to the file type.  Otherwise we use just
+" `jinja` for the file type.
+"
+" There are separate implementations for Vim and Neovim because I could not
+" make one solution work for both.
+
+
+autocmd! BufRead,BufNewFile *.jinja,*.jinja2,*.j2 if has('nvim') | call <SID>ft_nvim(expand('<afile>')) | else | call <SID>ft_vim(expand('<afile>')) | endif
 
 " Detect a normal or compound file extension (like 'foo.html.jinja')
-function! s:extension(fname)
+function! s:ft_vim(fname)
 	let l:previous_ft = &ft
 
 	" Try to detect the file type without the Jinja extension first. This will
@@ -51,4 +62,20 @@ function! s:extension(fname)
 	elseif &filetype !~? 'jinja'
 		set filetype+=.jinja
 	endif
+endfunction
+
+" Detect compound file type using Neovim's Lua API
+function! s:ft_nvim(fname) abort
+	let l:clipped_fname = fnamemodify(fnameescape(a:fname), ':r')
+	execute 'file' l:clipped_fname
+	let l:secondary_ft = luaeval('vim.filetype.match(_A)', {'buf': 0})
+	if empty(l:secondary_ft)
+		set filetype=jinja
+	else
+		let &filetype = printf('%s.jinja', l:secondary_ft)
+	endif
+	" Using ':file' has dissociated the buffer from its file, but executing
+	" ':edit' fixes this
+	execute 'file' a:fname
+	noautocmd silent edit
 endfunction
