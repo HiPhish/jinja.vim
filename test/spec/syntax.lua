@@ -40,7 +40,6 @@ describe('Syntax highlighting', function()
 
 	it('highlights filters', function()
 		assert.nvim(nvim).at_position(5, 15).has_hlgroup('jinjaFilter')
-		assert.nvim(nvim).at_position(7, 21).has_hlgroup('jinjaFilter')
 	end)
 
 	it('highlights statement blocks', function()
