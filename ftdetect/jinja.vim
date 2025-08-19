@@ -67,7 +67,7 @@ endfunction
 " Detect compound file type using Neovim's Lua API
 function! s:ft_nvim(fname) abort
 	let l:clipped_fname = fnamemodify(fnameescape(a:fname), ':r')
-	execute 'file' l:clipped_fname
+	silent execute 'file' l:clipped_fname
 	let l:secondary_ft = luaeval('vim.filetype.match(_A)', {'buf': 0})
 	if empty(l:secondary_ft)
 		set filetype=jinja
@@ -76,6 +76,6 @@ function! s:ft_nvim(fname) abort
 	endif
 	" Using ':file' has dissociated the buffer from its file, but executing
 	" ':edit' fixes this
-	execute 'file' a:fname
+	silent execute 'file' a:fname
 	noautocmd silent edit
 endfunction
