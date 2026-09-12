@@ -37,13 +37,14 @@ autocmd! BufRead,BufNewFile *.jinja,*.jinja2,*.j2 if has('nvim') | call <SID>ft_
 " Detect a normal or compound file extension (like 'foo.html.jinja')
 function! s:ft_vim(fname)
 	let l:previous_ft = &ft
+	let l:orig_name = expand('%')
 
 	" Try to detect the file type without the Jinja extension first. This will
 	" fail setting the file type of file extension like 'foo.xxxx.jinja',
 	" which is what we want.
 	silent execute 'file' fnamemodify(fnameescape(a:fname), ':r')
 	filetype detect
-	silent execute 'file' fnameescape(a:fname)
+	silent execute 'file' l:orig_name
 	" Using ':file' has dissociated the buffer from its file, but executing
 	" ':edit' fixes this
 	noautocmd silent edit
