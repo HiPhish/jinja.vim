@@ -1,0 +1,8 @@
+#!/bin/sh
+# SPDX-License-Identifier: 0BSD
+# SPDX-FileCopyrightText: © 2026 HiPhish
+
+# Forces Vim to load our custom configuration.  This is flawed, we need to
+# somehow tell Vim to use `test/xdg/vim` instead of `~/.vim`, not just to use a
+# different vimrc file.
+vim -u 'test/xdg/vim/vimrc' --cmd 'set runtimepath^=./' $@
