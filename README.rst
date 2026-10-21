@@ -117,16 +117,11 @@ TL;DR: Run these steps first if you want to run tests:
 
 .. code:: sh
 
-   ln -s .submodules .gitmodules
    git submodule init
-   git submodule updated --checkout
+   git submodule update --checkout
 
 To provide some context, there are dependencies needed to run tests.  These are
-included as Git submodules.  The problem is that a number of package managers
-will download submodules by default, which means that users will end up with a
-bunch of stuff installed that they don't want.  There is no way to tell Git to
-use a different file, so we have to create a symbolic link instead if we
-actually do want to download these submodules.
+included as Git submodules.
 
 
 License
